@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import {useRef } from "react";
 
 type Props = {
     handleAddList: (text: string) => void;
