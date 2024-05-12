@@ -10,7 +10,7 @@ import TextInputGroup from "./components/TextInputGroup";
 import List from "./components/List";
 import { Toast } from "./error/alert";
 
-type Todo = {
+export type Todo = {
     id: string;
     text: string;
     completed: boolean;
@@ -57,6 +57,14 @@ const App = () => {
         setLists([...allLists]);
     };
 
+    const handleUpdateList = (updateText: string,id : string): void => {
+        const allLists = lists.map(list =>
+            list.id == id ? { ...list, text: updateText } : list
+        );
+        setLists([...allLists]);
+        
+    }
+
     useEffect(() => {
         const checkedListCount = lists.filter(
             list => list.completed == true
@@ -83,12 +91,11 @@ const App = () => {
                             <div className=" flex flex-col gap-3">
                                 {lists?.map(list => (
                                     <List
-                                        text={list.text}
                                         key={list.id}
-                                        id={list.id}
-                                        completed={list.completed}
+                                        list={list}
                                         handleRemvoeList={handleRemvoeList}
                                         handleCheckedList={handleCheckedList}
+                                        handleUpdateList={handleUpdateList}
                                     />
                                 ))}
                             </div>

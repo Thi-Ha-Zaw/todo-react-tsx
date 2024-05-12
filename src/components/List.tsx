@@ -1,14 +1,37 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Todo } from "../App";
+import { Toast } from "../error/alert";
 
 type Props = {
-    text: string;
-    id: string;
-    completed: boolean;
+    list: Todo;
     handleRemvoeList: (id: string) => void;
     handleCheckedList: (id: string) => void;
+    handleUpdateList: (updateText: string,id: string,) => void;
 };
 
-const List = ({ text, id, handleRemvoeList, handleCheckedList,completed }: Props) => {
+const List = ({
+    list: { text, id, completed },
+    handleRemvoeList,
+    handleCheckedList,
+    handleUpdateList,
+}: Props) => {
+    const [isEdit, setIsEdit] = useState<boolean>(false);
+
+    const editInputRef = useRef<HTMLInputElement>(null);
+
+    const handleEditBtnClick = () => {
+        setIsEdit(true);
+        Toast.fire({
+            icon: "warning",
+            title: "It will save automatically when you clicked outside the input",
+        });
+    };
+
+    const handleInputOnBlur = () => {
+        handleUpdateList( editInputRef.current?.value ?? '',id);
+        setIsEdit(false);
+    };
+
     return (
         <div className=" animate__animated animate__slideInLeft flex justify-between px-4 py-2 shadow-sm border rounded">
             <div className=" flex gap-2 items-center">
@@ -17,10 +40,23 @@ const List = ({ text, id, handleRemvoeList, handleCheckedList,completed }: Props
                     type="checkbox"
                     className="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-blue-800 focus:ring-2 dark:bg-blue-700 dark:border-blue-600"
                 />
-                <p className={` text-sm ${completed && 'line-through'}`}>{text}</p>
+                {isEdit ? (
+                    <input
+                        onBlur={handleInputOnBlur}
+                        ref={editInputRef}
+                        defaultValue={text}
+                        autoFocus
+                        type="text"
+                        className=" outline-none border-b-2  px-3 focus-visible:outline-none"
+                    />
+                ) : (
+                    <p className={` text-sm ${completed && "line-through"}`}>
+                        {text}
+                    </p>
+                )}
             </div>
             <div className=" flex gap-2 items-center">
-                <button>
+                <button onClick={handleEditBtnClick}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

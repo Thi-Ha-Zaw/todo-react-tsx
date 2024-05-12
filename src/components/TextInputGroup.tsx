@@ -14,16 +14,13 @@ const TextInputGroup = ({ handleAddList }: Props) => {
         }
     };
 
-    useEffect(() => { 
-        inputRef.current?.focus()
-    },[])
-
     return (
         <div className=" flex mt-8">
             <input
                 ref={inputRef}
                 type="text"
                 className=" border border-gray-800 flex-grow px-3 rounded-l focus-visible: outline-none"
+                autoFocus
             />
             <button
                 onClick={handleClick}
