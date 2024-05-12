@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "animate.css";
-import Swal from "sweetalert2";
 import EmptyStage from "./components/EmptyStage";
 import Heading from "./components/Heading";
 import ListCount from "./components/ListCount";
 import SubHeading from "./components/SubHeading";
 import TextInputGroup from "./components/TextInputGroup";
 import List from "./components/List";
-import { Toast } from "./error/alert";
 
 export type Todo = {
     id: string;
@@ -30,24 +28,8 @@ const App = () => {
     };
 
     const handleRemvoeList = (id: string): void => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#1f2937",
-            cancelButtonColor: "#1f2937",
-            confirmButtonText: "Yes, delete it!",
-        }).then(result => {
-            if (result.isConfirmed) {
-                const filterLists = lists.filter(list => list.id != id);
-                setLists([...filterLists]);
-                Toast.fire({
-                    icon: "success",
-                    title: "Deleted it successfully",
-                });
-            }
-        });
+        const filterLists = lists.filter(list => list.id != id);
+        setLists([...filterLists]);
     };
 
     const handleCheckedList = (id: string): void => {
@@ -57,13 +39,12 @@ const App = () => {
         setLists([...allLists]);
     };
 
-    const handleUpdateList = (updateText: string,id : string): void => {
+    const handleUpdateList = (updateText: string, id: string): void => {
         const allLists = lists.map(list =>
             list.id == id ? { ...list, text: updateText } : list
         );
         setLists([...allLists]);
-        
-    }
+    };
 
     useEffect(() => {
         const checkedListCount = lists.filter(
@@ -71,6 +52,7 @@ const App = () => {
         ).length;
         setCompletedCont(checkedListCount);
     }, [lists]);
+
     return (
         <>
             <div className=" w-full h-screen flex justify-center items-center bg-gray-50">

@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Todo } from "../App";
 import { Toast } from "../error/alert";
+import Swal from "sweetalert2";
 
 type Props = {
     list: Todo;
     handleRemvoeList: (id: string) => void;
     handleCheckedList: (id: string) => void;
-    handleUpdateList: (updateText: string,id: string,) => void;
+    handleUpdateList: (updateText: string, id: string) => void;
 };
 
 const List = ({
@@ -15,8 +16,11 @@ const List = ({
     handleCheckedList,
     handleUpdateList,
 }: Props) => {
+    const [isanimateOut, setIsAnimateOut] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
+
+    const listRef = useRef<HTMLInputElement>(null);
     const editInputRef = useRef<HTMLInputElement>(null);
 
     const handleEditBtnClick = () => {
@@ -28,12 +32,42 @@ const List = ({
     };
 
     const handleInputOnBlur = () => {
-        handleUpdateList( editInputRef.current?.value ?? '',id);
+        handleUpdateList(editInputRef.current?.value ?? "", id);
         setIsEdit(false);
     };
 
+
+
+    const handleDelBtnClick = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#1f2937",
+            cancelButtonColor: "#1f2937",
+            confirmButtonText: "Yes, delete it!",
+        }).then(result => {
+            if (result.isConfirmed) {
+                setIsAnimateOut(true);
+                listRef.current?.addEventListener("animationend", () => {
+                    handleRemvoeList(id);
+                })
+                Toast.fire({
+                    icon: "success",
+                    title: "Deleted it successfully",
+                });
+            }
+        });
+    };
+
     return (
-        <div className=" animate__animated animate__slideInLeft flex justify-between px-4 py-2 shadow-sm border rounded">
+        <div
+            ref={listRef}
+            className={` animate__animated ${
+                isanimateOut ? "animate__hinge" : "animate__slideInLeft"
+            } flex justify-between px-4 py-2 shadow-sm border rounded`}
+        >
             <div className=" flex gap-2 items-center">
                 <input
                     onChange={() => handleCheckedList(id)}
@@ -72,7 +106,7 @@ const List = ({
                         />
                     </svg>
                 </button>
-                <button onClick={() => handleRemvoeList(id)}>
+                <button onClick={handleDelBtnClick}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
