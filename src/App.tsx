@@ -56,7 +56,7 @@ const App = () => {
     return (
         <>
             <div className=" w-full h-screen flex justify-center items-center bg-gray-50">
-                <div className=" w-[450px] p-10 bg-white shadow rounded">
+                <div className=" w-[450px] p-10 bg-white shadow rounded animate__animated animate__fadeIn">
                     <Heading title="List Builder" />
                     <TextInputGroup handleAddList={handleAddList} />
                     <div className=" flex mt-3 justify-between items-center">
