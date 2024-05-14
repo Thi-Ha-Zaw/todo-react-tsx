@@ -66,13 +66,13 @@ const List = ({
             ref={listRef}
             className={` animate__animated ${
                 isanimateOut ? "animate__hinge" : "animate__slideInLeft"
-            } flex justify-between px-4 py-2 shadow-sm border rounded`}
+            } flex justify-between px-4 py-2 shadow-sm border rounded group overflow-hidden items-center`}
         >
             <div className=" flex gap-2 items-center">
                 <input
                     onChange={() => handleCheckedList(id)}
                     type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-blue-100 border-blue-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-blue-800 focus:ring-2 dark:bg-blue-700 dark:border-blue-600"
+                    className="w-4 h-4 text-gray-600 accent-gray-800 bg-gray-100 border-gray-300 rounded focus:ring-gray-500 dark:focus:ring-gray-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 {isEdit ? (
                     <input
@@ -89,8 +89,8 @@ const List = ({
                     </p>
                 )}
             </div>
-            <div className=" flex gap-2 items-center">
-                <button onClick={handleEditBtnClick}>
+            <div className=" flex gap-2 items-center translate-x-[150%] duration-500 group-hover:translate-x-0">
+                <button className=" active:scale-90 duration-300" onClick={handleEditBtnClick}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -106,7 +106,7 @@ const List = ({
                         />
                     </svg>
                 </button>
-                <button onClick={handleDelBtnClick}>
+                <button className=" hover:scale-105 duration-300" onClick={handleDelBtnClick}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
